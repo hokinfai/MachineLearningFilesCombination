@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 public class Training {
@@ -16,8 +17,10 @@ public class Training {
 	List<String> txtlist = new ArrayList<String>();
 	int tsvCount = 0;
 	int txtCount = 0;
-	int continuity = 0;
+	int continuity = -1;
 	StringBuilder finalResult = new StringBuilder();
+	boolean citation = false;
+	String result;
 
 	public Training(String anno, String chunk) throws IOException {
 		this.anno = anno;
@@ -35,7 +38,8 @@ public class Training {
 			while (line != null) {
 
 				tsvlist.add(line);
-
+				if (line.contains("citation"))
+					citation = true;
 				line = br.readLine();
 			}
 			// insert txt file record into arraylist
@@ -54,39 +58,58 @@ public class Training {
 			tsvlist.add("checking	0	0	nothing	nothing	NN	B-NP");
 			txtlist.removeAll(Arrays.asList(null, ""));
 			finalResult.append("");
+			LinkedHashSet<String> lhs = new LinkedHashSet<String>();
+			lhs.addAll(tsvlist);
+
+			// Removing ArrayList elements
+			tsvlist.clear();
+
+			// Adding LinkedHashSet elements to the ArrayList
+			tsvlist.addAll(lhs);
 		}
 	}
 
-	public void merging() {
-		if (tsvCount < tsvlist.size() && txtCount < txtlist.size()) {
-			String[] annoSp = tsvlist.get(tsvCount).split("\t");
-			String[] chunkSp = txtlist.get(txtCount).split("\t");
+	public void merge() {
+		for (int j = 0; j < txtlist.size(); j++) {
+			String[] chunkSp = txtlist.get(j).split("\t");
 
-			if (Integer.parseInt(annoSp[1]) - Integer.parseInt(chunkSp[0]) <= 5
-					&& (annoSp[3].contains(chunkSp[2]) || chunkSp[2].contains(annoSp[3]))
-					&& annoSp[5].equals(chunkSp[4])) {
-				System.out.println(tsvlist.get(tsvCount));
-				finalResult.append(tsvlist.get(tsvCount) + "\n");
-				continuity++;
-				txtCount++;
-				tsvCount++;
-				if (chunkSp[2].matches("\\d\\d\\d\\d-\\d\\d\\d\\d") && annoSp[0].equals("TemporalExpression"))
-					txtCount--;
-				merging();
-			} else {
+			for (int i = 0; i < tsvlist.size(); i++) {
+				String[] annoSp = tsvlist.get(i).split("\t");
 
-				txtCount = txtCount - continuity;
-				continuity = 0;
+				if (Integer.parseInt(annoSp[1]) - Integer.parseInt(chunkSp[0]) <= 5
+						&& (annoSp[3].contains(chunkSp[2]) || chunkSp[2].contains(annoSp[3]))
+						&& annoSp[5].equals(chunkSp[4])) {
+					if (!finalResult.toString().contains(tsvlist.get(i))) {
+						System.out.println(tsvlist.get(i));
 
-				if (!finalResult.toString().contains(txtlist.get(txtCount))) {
-					System.out.println("O\t" + txtlist.get(txtCount));
-					finalResult.append("O\t" + txtlist.get(txtCount) + "\n");
+						finalResult.append(tsvlist.get(i) + "\n");
+					}
+				} else {
+					if (!finalResult.toString().contains(txtlist.get(j))) {
+						System.out.println("O\t" + txtlist.get(j) + "\n");
+						finalResult.append("O\t" + txtlist.get(j) + "\n");
+					}
 				}
-				txtCount++;
-				merging();
+
 			}
+		}
+
+		result = finalResult.toString();
+		System.out.println();
+		System.out.println(result);
+		for (String ele : tsvlist) {
+			ele = ele.replace("(", "\\(");
+			ele = ele.replace(")", "\\)");
+			String[] eleSp = ele.split("\t");
+			String replace = "O\t" + eleSp[1] + "\t" + eleSp[2] + "\t" + eleSp[3] + "\t" + eleSp[4] + "\t" + eleSp[5]
+					+ "\t" + eleSp[6] + "\n";
+
+			System.out.println("replace: " + replace);
+			result = result.replaceFirst(replace, "");
 
 		}
+		System.out.println(result);
+
 	}
 
 	public void fileWriter(String outputPath, String name) throws IOException {
@@ -96,13 +119,13 @@ public class Training {
 		// creates a FileWriter Object
 		FileWriter writer = new FileWriter(file);
 		// Writes the content to the file
-		writer.write(finalResult.toString());
+		writer.write(result.toString());
 		writer.flush();
 		writer.close();
 	}
 
 	public static void main(String args[]) throws IOException {
-		String chunkPath = "/Users/AlanHo/Documents/DissertationLibrary/gold standard/with chunk";
+		String chunkPath = "/Users/AlanHo/Documents/DissertationLibrary/gold standard/with chunk1";
 		String annoPath = "/Users/AlanHo/Documents/DissertationLibrary/gold standard/Combination";
 		String outputPath = "/Users/AlanHo/Documents/DissertationLibrary/gold standard/TrainingTestingData/";
 		File folder = new File(chunkPath);
@@ -115,11 +138,17 @@ public class Training {
 
 					Training train = new Training(annoPath + "/" + listOfFiles[i].getName(),
 							chunkPath + "/" + listOfFiles[i].getName());
-					train.merging();
+					// train.merging();
+					train.merge();
 					train.fileWriter(outputPath, listOfFiles[i].getName());
 
 				}
 			}
 		}
+		String abc = "abc";
+		abc = abc.replace("d", "b");
+		abc = abc.replace("a", "d");
+		System.out.println(abc);
 	}
+
 }
