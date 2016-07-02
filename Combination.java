@@ -2,7 +2,6 @@ package MachineLearningFilesCombination;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -72,14 +71,20 @@ public class Combination {
 
 			// System.out.println("tsv file: " + tsvlist.get(tsvCount));
 			for (int i = 0; i < txtlist.size(); i++) {
-			//	System.out.println(txtlist.get(i));
+				// System.out.println(txtlist.get(i));
 				String[] txtSpilt = txtlist.get(i).split("\t");
+				String annotation;
+				if (Integer.parseInt(txtSpilt[0]) - Integer.parseInt(annoSpilt[2]) == 0)
+					annotation = "B-" + annoSpilt[1];
 
+				else
+					annotation = "I-" + annoSpilt[1];
 				if (Integer.parseInt(txtSpilt[0]) - Integer.parseInt(annoSpilt[2]) >= 0
 						&& Integer.parseInt(annoSpilt[3]) - Integer.parseInt(txtSpilt[1]) >= 0) {
 					String verify = txtSpilt[1] + "\t" + ((Integer.parseInt(txtSpilt[1]) + 1));
-					finalResult.append(annoSpilt[1] + "\t" + txtlist.get(i) + "\n");
-					System.out.println(annoSpilt[1] + "\t" + txtlist.get(i));
+
+					finalResult.append(annotation + "\t" + txtlist.get(i) + "\n");
+					System.out.println(annotation + "\t" + txtlist.get(i));
 
 					if (annoSpilt[3].equals(txtSpilt[1])
 							|| ((Integer.parseInt(annoSpilt[3]) - Integer.parseInt(txtSpilt[1]) == 1)
@@ -92,11 +97,13 @@ public class Combination {
 				} else if (Integer.parseInt(txtSpilt[0]) - Integer.parseInt(annoSpilt[2]) >= 0
 						&& (Integer.parseInt(annoSpilt[3]) - Integer.parseInt(txtSpilt[1]) == -1)
 						&& !txtlist.get(i).startsWith(annoSpilt[3] + "\t" + txtSpilt[1])) {
-					System.out.println("txtSpilt[0]: " + txtSpilt[0] + " annoSpilt[2]: " + annoSpilt[2]
-							+ "annoSpilt[3]: " + annoSpilt[3] + " txtSpilt[1]: " + txtSpilt[1]);
+					// System.out.println("txtSpilt[0]: " + txtSpilt[0] + "
+					// annoSpilt[2]: " + annoSpilt[2]
+					// + "annoSpilt[3]: " + annoSpilt[3] + " txtSpilt[1]: " +
+					// txtSpilt[1]);
 					String extra1word = annoSpilt[1] + "\t" + txtSpilt[0] + "\t" + annoSpilt[3] + "\t"
-							+ txtSpilt[2].substring(0, txtSpilt[2].length() - 1) + "\t" + txtSpilt[4] + "\t"
-							+ txtSpilt[5] + "\n";
+							+ txtSpilt[2].substring(0, txtSpilt[2].length() - 1) + "\t" + txtSpilt[3] + "\t"
+							+ txtSpilt[4] + "\t" + txtSpilt[5] + "\n";
 					finalResult.append(extra1word);
 					System.out.println("extra: " + extra1word);
 					tsvCount++;
@@ -113,8 +120,8 @@ public class Combination {
 							+ "annoSpilt[3]: " + annoSpilt[3] + " txtSpilt[1]: " + txtSpilt[1]);
 					System.out.println(txtlist.get(i));
 					String extra2word = annoSpilt[1] + "\t" + txtSpilt[0] + "\t" + annoSpilt[3] + "\t"
-							+ txtSpilt[2].substring(0, txtSpilt[2].length() - 2) + "\t" + txtSpilt[4] + "\t"
-							+ txtSpilt[5] + "\n";
+							+ txtSpilt[2].substring(0, txtSpilt[2].length() - 2) + "\t" + txtSpilt[3] + "\t"
+							+ txtSpilt[4] + "\t" + txtSpilt[5] + "\n";
 					finalResult.append(extra2word);
 					System.out.println("extra 2 words");
 					System.out.println(extra2word);
@@ -139,8 +146,8 @@ public class Combination {
 							+ (Integer.parseInt(annoSpilt[3]) + 1 + "\t" + (Integer.parseInt(txtSpilt[1]))));
 					System.out.println(txtlist.get(i));
 					String extra3word = annoSpilt[1] + "\t" + txtSpilt[0] + "\t" + annoSpilt[3] + "\t"
-							+ txtSpilt[2].substring(0, txtSpilt[2].length() - 3) + "\t" + txtSpilt[4] + "\t"
-							+ txtSpilt[5] + "\n";
+							+ txtSpilt[2].substring(0, txtSpilt[2].length() - 3) + "\t" + txtSpilt[3] + "\t"
+							+ txtSpilt[4] + "\t" + txtSpilt[5] + "\n";
 					finalResult.append(extra3word);
 					System.out.println("extra 3 words");
 					System.out.println(extra3word);
@@ -150,7 +157,7 @@ public class Combination {
 						&& Integer.parseInt(annoSpilt[3]) - Integer.parseInt(txtSpilt[1]) <= 0
 						&& txtSpilt[2].matches("\\d\\d\\d\\d-\\d\\d\\d\\d")) {
 					int index = Integer.parseInt(annoSpilt[2]) - Integer.parseInt(txtSpilt[0]);
-					String TemporalExpression = "TemporalExpression\t" + annoSpilt[2] + "\t" + annoSpilt[3] + "\t"
+					String TemporalExpression = "B-TemporalExpression\t" + annoSpilt[2] + "\t" + annoSpilt[3] + "\t"
 							+ txtSpilt[2].substring(index,
 									Integer.parseInt(annoSpilt[3]) - Integer.parseInt(txtSpilt[0]))
 							+ "\t"

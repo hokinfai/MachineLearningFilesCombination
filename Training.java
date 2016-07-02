@@ -125,7 +125,7 @@ public class Training {
 	}
 
 	public static void main(String args[]) throws IOException {
-		String chunkPath = "/Users/AlanHo/Documents/DissertationLibrary/gold standard/with chunk1";
+		String chunkPath = "/Users/AlanHo/Documents/DissertationLibrary/gold standard/with chunk";
 		String annoPath = "/Users/AlanHo/Documents/DissertationLibrary/gold standard/Combination";
 		String outputPath = "/Users/AlanHo/Documents/DissertationLibrary/gold standard/TrainingTestingData/";
 		File folder = new File(chunkPath);
@@ -145,10 +145,6 @@ public class Training {
 				}
 			}
 		}
-		String abc = "abc";
-		abc = abc.replace("d", "b");
-		abc = abc.replace("a", "d");
-		System.out.println(abc);
 	}
 
 }

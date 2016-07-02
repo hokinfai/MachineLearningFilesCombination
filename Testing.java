@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class Testing {
 	public static void main(String args[]) throws IOException {
-		String path = "/Users/AlanHo/Documents/DissertationLibrary/gold standard/with chunk1";
+		String path = "/Users/AlanHo/Documents/DissertationLibrary/gold standard/with chunk";
 		String tsv = "/Users/AlanHo/Documents/DissertationLibrary/gold standard/entities";
 		String outputPath = "/Users/AlanHo/Documents/DissertationLibrary/gold standard/Combination/";
 		System.out.println("abc");
