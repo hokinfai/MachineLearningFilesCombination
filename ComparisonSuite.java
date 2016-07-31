@@ -56,9 +56,11 @@ public class ComparisonSuite {
 		List<String> goldlist = new ArrayList<String>();
 		List<String> prelist = new ArrayList<String>();
 		// You need to change the path to the files correspondingly
-		String path = "/Users/AlanHo/Documents/DissertationLibrary/COMPARISONsuite/Machine Learning/First Version (5 Files)/";
-		BufferedReader br = new BufferedReader(new FileReader(path + "19701_English_2376386_1958.txt"));
-		BufferedReader br2 = new BufferedReader(new FileReader(path + "5FileResult.txt"));
+		// Dataset 1
+//		String path = "/Users/AlanHo/Documents/DissertationLibrary/COMPARISONsuite/Machine Learning/Third Version (Dictionary features)/";
+		 String path = "/Users/AlanHo/Documents/DissertationLibrary/COMPARISONsuite/Machine Learning/Fourth Version (Dictionary Features with different datasets)/";
+		BufferedReader br = new BufferedReader(new FileReader(path + "TestingGoldStandard.txt"));
+		BufferedReader br2 = new BufferedReader(new FileReader(path + "result.txt"));
 		try {
 
 			String line = br.readLine();
@@ -88,6 +90,6 @@ public class ComparisonSuite {
 			}
 		}
 		// You need to change the path to the files correspondingly
-		com.writeFile(path + "ComparisonSuite(5files).txt");
+		com.writeFile(path + "Comparison.txt");
 	}
 }

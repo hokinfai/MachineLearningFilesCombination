@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class FileCombination {
 	public static void main(String args[]) throws IOException {
-		String path = "/Users/AlanHo/Documents/DissertationLibrary/gold standard/TrainingTestingData/Testing Data";
+		String path = "/Users/AlanHo/Documents/DissertationLibrary/documents/gold standard/TrainingTestingData/Testing Data1";
 		StringBuilder output = new StringBuilder();
 		File folder = new File(path);
 		File[] listOfFiles = folder.listFiles();
@@ -34,7 +34,7 @@ public class FileCombination {
 
 					{
 						br.close();
-						File file = new File("/Users/AlanHo/Documents/DissertationLibrary/Testing.txt");
+						File file = new File("/Users/AlanHo/Documents/DissertationLibrary/Testing1.txt");
 						// creates the file
 						file.createNewFile();
 						// creates a FileWriter Object

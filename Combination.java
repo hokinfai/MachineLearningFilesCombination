@@ -34,12 +34,13 @@ public class Combination {
 
 			while (line != null) {
 				String[] seg = line.split("\t");
-				tsvlist.add(line);
-
+				if (!(line.contains("Citation") || line.contains("SpecimenInfo"))) {
+					tsvlist.add(line);
+					System.out.println("HERE: " + seg[1]);
+				}
 				checking.append("b" + seg[2] + " e" + seg[3] + " ");
 				line = br.readLine();
 			}
-			// }
 
 			// insert txt file record into arraylist
 			String line2 = br2.readLine();
@@ -101,7 +102,7 @@ public class Combination {
 					// annoSpilt[2]: " + annoSpilt[2]
 					// + "annoSpilt[3]: " + annoSpilt[3] + " txtSpilt[1]: " +
 					// txtSpilt[1]);
-					String extra1word = annoSpilt[1] + "\t" + txtSpilt[0] + "\t" + annoSpilt[3] + "\t"
+					String extra1word = annotation + "\t" + txtSpilt[0] + "\t" + annoSpilt[3] + "\t"
 							+ txtSpilt[2].substring(0, txtSpilt[2].length() - 1) + "\t" + txtSpilt[3] + "\t"
 							+ txtSpilt[4] + "\t" + txtSpilt[5] + "\n";
 					finalResult.append(extra1word);
@@ -119,7 +120,7 @@ public class Combination {
 					System.out.println("txtSpilt[0]: " + txtSpilt[0] + " annoSpilt[2]: " + annoSpilt[2]
 							+ "annoSpilt[3]: " + annoSpilt[3] + " txtSpilt[1]: " + txtSpilt[1]);
 					System.out.println(txtlist.get(i));
-					String extra2word = annoSpilt[1] + "\t" + txtSpilt[0] + "\t" + annoSpilt[3] + "\t"
+					String extra2word = annotation + "\t" + txtSpilt[0] + "\t" + annoSpilt[3] + "\t"
 							+ txtSpilt[2].substring(0, txtSpilt[2].length() - 2) + "\t" + txtSpilt[3] + "\t"
 							+ txtSpilt[4] + "\t" + txtSpilt[5] + "\n";
 					finalResult.append(extra2word);
@@ -145,7 +146,7 @@ public class Combination {
 							+ txtSpilt[1] + " "
 							+ (Integer.parseInt(annoSpilt[3]) + 1 + "\t" + (Integer.parseInt(txtSpilt[1]))));
 					System.out.println(txtlist.get(i));
-					String extra3word = annoSpilt[1] + "\t" + txtSpilt[0] + "\t" + annoSpilt[3] + "\t"
+					String extra3word = annotation + "\t" + txtSpilt[0] + "\t" + annoSpilt[3] + "\t"
 							+ txtSpilt[2].substring(0, txtSpilt[2].length() - 3) + "\t" + txtSpilt[3] + "\t"
 							+ txtSpilt[4] + "\t" + txtSpilt[5] + "\n";
 					finalResult.append(extra3word);
@@ -169,7 +170,9 @@ public class Combination {
 					System.out.println();
 					tsvCount++;
 					combine();
-				} else {
+				}
+
+				else {
 					System.out.println(txtlist.get(i));
 				}
 

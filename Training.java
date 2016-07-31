@@ -55,7 +55,7 @@ public class Training {
 		{
 			br.close();
 			br2.close();
-			tsvlist.add("checking	0	0	nothing	nothing	NN	B-NP");
+			// tsvlist.add("checking 0 0 nothing nothing NN B-NP");
 			txtlist.removeAll(Arrays.asList(null, ""));
 			finalResult.append("");
 			LinkedHashSet<String> lhs = new LinkedHashSet<String>();
@@ -72,21 +72,23 @@ public class Training {
 	public void merge() {
 		for (int j = 0; j < txtlist.size(); j++) {
 			String[] chunkSp = txtlist.get(j).split("\t");
-
+			System.out.println("annatation: " + txtlist.get(j));
 			for (int i = 0; i < tsvlist.size(); i++) {
 				String[] annoSp = tsvlist.get(i).split("\t");
 
 				if (Integer.parseInt(annoSp[1]) - Integer.parseInt(chunkSp[0]) <= 5
 						&& (annoSp[3].contains(chunkSp[2]) || chunkSp[2].contains(annoSp[3]))
 						&& annoSp[5].equals(chunkSp[4])) {
-					if (!finalResult.toString().contains(tsvlist.get(i))) {
-						System.out.println(tsvlist.get(i));
 
+					if (!finalResult.toString().contains(tsvlist.get(i))) {
+						System.out.println("I am here");
+						System.out.println(tsvlist.get(i));
 						finalResult.append(tsvlist.get(i) + "\n");
 					}
 				} else {
 					if (!finalResult.toString().contains(txtlist.get(j))) {
-						System.out.println("O\t" + txtlist.get(j) + "\n");
+						System.out.println("out");
+						System.out.println("O\t" + txtlist.get(j));
 						finalResult.append("O\t" + txtlist.get(j) + "\n");
 					}
 				}
@@ -125,16 +127,16 @@ public class Training {
 	}
 
 	public static void main(String args[]) throws IOException {
-		String chunkPath = "/Users/AlanHo/Documents/DissertationLibrary/gold standard/with chunk";
-		String annoPath = "/Users/AlanHo/Documents/DissertationLibrary/gold standard/Combination";
-		String outputPath = "/Users/AlanHo/Documents/DissertationLibrary/gold standard/TrainingTestingData/";
+		String chunkPath = "/Users/AlanHo/Documents/DissertationLibrary/documents/gold standard/with chunk";
+		String annoPath = "/Users/AlanHo/Documents/DissertationLibrary/documents/gold standard/Combination";
+		String outputPath = "/Users/AlanHo/Documents/DissertationLibrary/documents/gold standard/TrainingTestingData/";
 		File folder = new File(chunkPath);
 		File[] listOfFiles = folder.listFiles();
 		for (int i = 0; i < listOfFiles.length; i++) {
 			if (listOfFiles[i].isFile()) {
 				if (listOfFiles[i].getName().endsWith(".txt")) {
 					System.out.println();
-					System.out.println(annoPath + "/" + listOfFiles[i].getName());
+					System.out.println("annotation:  " + annoPath + "/" + listOfFiles[i].getName());
 
 					Training train = new Training(annoPath + "/" + listOfFiles[i].getName(),
 							chunkPath + "/" + listOfFiles[i].getName());
